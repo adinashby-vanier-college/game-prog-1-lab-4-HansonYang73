@@ -23,6 +23,8 @@ public class Lobster extends Actor
     public void act()
     {
         moveAround();
+        eat();
+        zombie();
     }
 
     /**
@@ -36,6 +38,34 @@ public class Lobster extends Actor
         }
         if (isAtEdge()) {
             turn(180);
+        }
+    }
+
+    /**
+     * 
+     */
+    public void eat()
+    {
+        Actor crab = getOneIntersectingObject(Crab.class);
+        if (crab != null) {
+            World gameOverWorld =  new  GameOverWorld();
+            World world = getWorld();
+            world.removeObject(crab);
+            Greenfoot.playSound("gameover.wav");
+            Greenfoot.setWorld(gameOverWorld);
+        }
+    }
+
+    /**
+     * 
+     */
+    public void zombie()
+    {
+        Actor worm = getOneIntersectingObject(Worm.class);
+        if (worm != null) {
+            World world = getWorld();
+            world.addObject( new  Lobster(), worm.getX(), worm.getY());
+            world.removeObject(worm);
         }
     }
 }
